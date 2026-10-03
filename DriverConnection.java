@@ -12,7 +12,7 @@ public class DriverConnection {
 
 	return DriverManager.getConnection
 
-	("jdbc:oracle:thin:@localhost:1521:xe","system", "manager");
+	("jdbc:oracle:thin:@localhost:1521:xe","?", "?");
 
 	}
 	}
