@@ -1,25 +1,31 @@
 package test;
-import java.sql.*;
-public class UserDAO
-{
-public boolean validate(String uname, String pass)
-{
-try
-{
-Connection con = DriverConnection.getConnection();
 
-Statement st = con.createStatement();
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
-ResultSet rs = st.executeQuery("select*from userdetails where uname='"+uname+"'\' and pass=\'"+pass+"\'");
+public class UserDAO {
 
-return rs.next();
+    public boolean validate(String uname, String pass) {
 
-}//end of try
+        String sql =
+                "SELECT 1 FROM userdetails WHERE uname = ? AND pass = ?";
 
-catch (Exception e)
-{
-e.printStackTrace();
-}
-return false;
-}
+        try (
+            Connection con = DriverConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql)
+        ) {
+
+            ps.setString(1, uname);
+            ps.setString(2, pass);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
