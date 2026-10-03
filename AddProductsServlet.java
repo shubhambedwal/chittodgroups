@@ -25,11 +25,13 @@ products=new ArrayList();
 hs.setAttribute("products",products);
 }
 
-String[] pcodes=request.getParameterValues("products");
+String[] pcodes = request.getParameterValues("products");
 
-for(int i=0;i<pcodes.length;i++)
+if (pcodes == null || pcodes.length == 0) {
+    // no products selected
+}
 {
-if(request.getParameter(pcodes[i]).equals(""))
+elseif(request.getParameter(pcodes[i]).equals(""))
 
 continue;
 
