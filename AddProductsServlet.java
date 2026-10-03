@@ -45,7 +45,9 @@ if(j!=-1)
 {
 p=(Product)products.get(j);
 
-p.qty+=Double.parseDouble(request.getParameter(pcodes[i]));
+if (qty <= 0) {
+    // reject
+}
 }
 else
 {
