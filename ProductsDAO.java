@@ -1,43 +1,40 @@
 package test;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.Collection;
 
-import java.util.*;
+public class ProductsDAO {
 
-public class ProductsDAO
-{
-public Collection getProducts()
-{
-try
-{
-Connection con = DriverConnection.getConnection();
+    public Collection<Product> getProducts() {
 
-Statement st = con.createStatement();
+        ArrayList<Product> products = new ArrayList<>();
 
-ResultSet rs = st.executeQuery("select * from products");
+        String sql = "SELECT code, name, qty FROM products";
 
-ArrayList products = new ArrayList();
+        try (
+            Connection con = DriverConnection.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery()
+        ) {
 
-while(rs.next())
-{
-Product p = new Product();
+            while (rs.next()) {
 
-p.code = rs.getString(1);
+                Product p = new Product();
 
-p.name = rs.getString(2);
+                p.setCode(rs.getString("code"));
+                p.setName(rs.getString("name"));
+                p.setQty(rs.getDouble("qty"));
 
-p.qty=rs.getDouble(3);
+                products.add(p);
+            }
 
-products.add(p);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-return products;
-}
-}//end of try
-
-catch (Exception e)
-{
-e.printStackTrace();
-}
-return null; 
-}
+        return products;
+    }
 }
